@@ -26,7 +26,7 @@ const endpoint = async (path, req, res) => {
 
   var message = "";
 
-  message += "*** PATH: /<br />";
+  message += "*** PATH: " + path + "<br />";
   message += "<br />";
   message += "<br />";
 
