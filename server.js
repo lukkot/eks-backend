@@ -19,12 +19,16 @@ const ips = network.getIps();
 const app = express();
 app.use(cors());
 
-// ENDPOINTS
-app.get('/', async (req, res) => {
+// ENDPOINTS UTILS
+const endpoint = async (path, req, res) => {
   var dbResult = await db.getIpAndTimestamp();
   var backendInternalResult = (await superagent.get(env.BACKEND_INTERNAL_HOST + ':' + env.BACKEND_INTERNAL_PORT)).text;
 
   var message = "";
+
+  message += "*** PATH: /<br />";
+  message += "<br />";
+  message += "<br />";
 
   message += "*** BACKEND:<br />";
   message += ips + "<br />";
@@ -39,7 +43,12 @@ app.get('/', async (req, res) => {
   message += backendInternalResult;
 
   res.send(message);
-});
+}
+
+// ENDPOINTS
+app.get('/', endpoint.bind(null, '/'));
+app.get('/api', endpoint.bind(null, '/api'));
+app.get('/foo/*', endpoint.bind(null, '/foo/*'));
 
 app.listen(PORT, HOST);
 console.log(`Running on http:${HOST}:${PORT}`);
